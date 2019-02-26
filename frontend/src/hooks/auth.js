@@ -4,7 +4,7 @@ import { AuthContext } from "../components/Auth";
 
 export function useAuth() {
     const [errors, setErrors] = useState(null);
-    // const { setCurrentUser } = useContext(AuthContext);
+    const { setCurrentUser } = useContext(AuthContext);
 
     const logOut = async () => {
         await apiRequest({

@@ -1,5 +1,6 @@
-import React, { useState, setState } from "react";
+import React, { useState, setState, useEffect } from "react";
 import { LOCAL_STORAGE_KEY, apiRequest } from "../services/api.js";
+import axios from "axios";
 
 export const AuthContext = React.createContext();
 
@@ -16,8 +17,24 @@ const Auth = ({ children }) => {
     };
 
     const authenticate = async () => {
-        const req = await apiRequest({ path: "login" });
+        if (!user) {
+            const user = await apiRequest({
+                path: "/user",
+                method: "GET"
+            });
+
+            const userResponse =
+                user && user.response && user.response.status !== 200
+                    ? null
+                    : user;
+
+            setCurrentUser(userResponse);
+        }
     };
+
+    useEffect(() => {
+        authenticate();
+    }, []);
 
     const context = { user, setCurrentUser };
 

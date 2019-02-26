@@ -1,3 +1,4 @@
+from flask import json
 from flask_restful import Resource, reqparse
 from models import UserModel, RevokedTokenModel
 from flask_jwt_extended import (create_access_token, create_refresh_token,
@@ -49,7 +50,7 @@ class UserLogin(Resource):
                 'message': 'Logged in as {}'.format(current_user.username),
                 'access_token': access_token,
                 'refresh_token': refresh_token
-            }, 200, {'access_token': access_token}
+            }, 200, {'access_token': access_token, 'set-cookie': 'name=test'}
         else:
             return {'message': 'Wrong credentials'}
 
@@ -92,6 +93,18 @@ class AllUsers(Resource):
 
     def delete(self):
         return UserModel.delete_all()
+
+
+class User(Resource):
+    @jwt_required
+    def get(self):
+        current_user = get_jwt_identity()
+        # return current_user
+        user = UserModel.find_by_username(current_user)
+        return {
+            'username': user.username,
+            'id': user.id
+        }
 
 
 class SecretResource(Resource):

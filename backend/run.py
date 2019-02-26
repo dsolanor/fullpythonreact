@@ -2,7 +2,7 @@
 import resources
 import models
 from database import db
-from flask import Flask, jsonify
+from flask import Flask, jsonify, make_response
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
@@ -21,7 +21,7 @@ app.config['JWT_SECRET_KEY'] = 'jwt-secret-string'
 db.init_app(app)
 jwt = JWTManager(app)
 cors = CORS(app, resources={r"/*": {"origins": "*"}},
-            expose_headers="access_token")
+            expose_headers=["access_token", "Set-Cookie"])
 
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
@@ -44,6 +44,7 @@ api.add_resource(resources.UserLogoutAccess, '/logout/access')
 api.add_resource(resources.UserLogoutRefresh, '/logout/refresh')
 api.add_resource(resources.TokenRefresh, '/token/refresh')
 api.add_resource(resources.AllUsers, '/users')
+api.add_resource(resources.User, '/user')
 api.add_resource(resources.SecretResource, '/secret')
 
 
