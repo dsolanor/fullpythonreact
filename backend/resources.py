@@ -52,7 +52,7 @@ class UserLogin(Resource):
                 'refresh_token': refresh_token
             }, 200, {'access_token': access_token, 'set-cookie': 'name=test'}
         else:
-            return {'message': 'Wrong credentials'}
+            return {'message': 'Wrong credentials'}, 401
 
 
 class UserLogoutAccess(Resource):
