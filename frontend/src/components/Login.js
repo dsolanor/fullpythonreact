@@ -23,6 +23,11 @@ class Login extends React.Component {
     render() {
         return (
             <div>
+                {this.props.auth &&
+                    !this.props.auth.success &&
+                    this.props.auth.data.message && (
+                        <div>{this.props.auth.data.message}</div>
+                    )}
                 <form onSubmit={this.handleLoginForm.bind(this)}>
                     <input
                         onChange={this.handleChangeVal}

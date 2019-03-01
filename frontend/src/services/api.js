@@ -57,7 +57,7 @@ export const apiRequest = async ({
             headers: Object.assign({}, DEFAULT_HEADERS, headers)
         });
 
-        return response.data;
+        return response;
     } catch (error) {
         return error;
     }
